@@ -14,10 +14,9 @@ public class user {
     public user() {
     }
 
-    public user(String username, String password, String userType) {
+    public user(String username, String password) {
         this.username = username;
         this.password = password;
-        this.userType = userType;
     }
 
     @Id
@@ -29,9 +28,6 @@ public class user {
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "user_type")
-    private String userType;
 
 
     public int getId() {
@@ -58,13 +54,6 @@ public class user {
         this.password = password;
     }
 
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
 
     @Override
     public String toString() {
@@ -72,7 +61,6 @@ public class user {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", userType='" + userType + '\'' +
                 '}';
     }
 }
