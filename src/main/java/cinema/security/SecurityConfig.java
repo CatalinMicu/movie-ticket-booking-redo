@@ -47,11 +47,17 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
-
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        return manager;
 
+        // Specify the custom queries to match your table structure
+        manager.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username = ?");
+        manager.setAuthoritiesByUsernameQuery("SELECT u.username, a.authority FROM users u JOIN authorities a ON u.user_id = a.user_id WHERE u.username = ?");
+
+        return manager;
     }
+
+
+
 
 
 
@@ -65,6 +71,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/users").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/movies").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/movies/**").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/movies").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/movies").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/movies/**").hasAnyAuthority("ADMIN")
 
         );
         //use http basic authentification

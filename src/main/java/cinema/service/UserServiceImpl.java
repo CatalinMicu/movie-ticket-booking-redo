@@ -1,9 +1,9 @@
 package cinema.service;
 
+import cinema.DAO.AuthoritiesRepository;
 import cinema.DAO.UserRepository;
 import cinema.entity.user;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +13,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private AuthoritiesRepository authoritiesRepository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository theUserService) {
-        userRepository = theUserService;
+    public UserServiceImpl(UserRepository theuserRepository, AuthoritiesRepository theAuthoritiesRepostiroy) {
+        userRepository = theuserRepository;
+        authoritiesRepository = theAuthoritiesRepostiroy;
     }
 
     @Override
@@ -25,25 +26,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public user findById(int theId) {
-        Optional<user> rezultat = userRepository.findById(theId);
+    public user findById(int id) {
+        Optional<user> result = userRepository.findById(id);
 
         user theUser = null;
 
-        if (rezultat.isPresent()) {
-            theUser = rezultat.get();
+        if (result.isPresent()) {
+            theUser = result.get();
         }
         else {
-            throw new RuntimeException("Did not find user with id - " + theId);
+            // we didn't find the employee
+            throw new RuntimeException("Did not find user id - " + id);
         }
+
         return theUser;
     }
 
     @Override
     public user save(user theUser) {
-       return userRepository.save(theUser);
+        return userRepository.save(theUser);
     }
 
+    @Transactional
     @Override
     public void deleteById(int theId) {
         userRepository.deleteById(theId);

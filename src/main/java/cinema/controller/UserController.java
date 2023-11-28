@@ -1,13 +1,15 @@
 package cinema.controller;
 
 import cinema.entity.user;
+import cinema.service.AuthoritiesService;
 import cinema.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/api")
@@ -19,6 +21,9 @@ public class UserController {
     public UserController(UserService serviciu) {
         userService = serviciu;
     }
+
+    @Autowired
+    AuthoritiesService authoritiesService;
 
     @GetMapping("/users")
     @ResponseBody
@@ -36,12 +41,25 @@ public class UserController {
         return theUser;
     }
 
+    @Transactional
     @PostMapping("/users")
     @ResponseBody
     public user addUser(@RequestBody user theUser) {
         theUser.setId(0);
+        theUser.setEnabled(true);
         user dbUser = userService.save(theUser);
+        authoritiesService.saveAuthorityForUser(dbUser);
         return dbUser;
+    }
+
+    @DeleteMapping("users/{user_id}")
+    public String deleteUser(@PathVariable int user_id) {
+        user tempUser = userService.findById(user_id);
+        if (tempUser == null) {
+            throw new RuntimeException("User id not found - " + user_id);
+        }
+        userService.deleteById(user_id);
+        return "Deleted user id - " + user_id;
     }
 
 

@@ -1,17 +1,21 @@
 package cinema.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.beans.ConstructorProperties;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class user {
 
     public user() {
+    }
+
+    public user(String username, String password, boolean enabled) {
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
     }
 
     public user(String username, String password) {
@@ -29,6 +33,11 @@ public class user {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<authorities> authorities;
 
     public int getId() {
         return id;
@@ -54,6 +63,13 @@ public class user {
         this.password = password;
     }
 
+    public boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
     public String toString() {
@@ -61,6 +77,7 @@ public class user {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
