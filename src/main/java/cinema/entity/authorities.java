@@ -15,17 +15,15 @@ public class authorities {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private user user;  // the `user` class is referenced here with a lowercase name
+    private user user;
 
     public authorities() {
     }
 
     public authorities(String authority, user user) {
         this.authority = authority;
-        this.user = user;  // Set the user object here
+        this.user = user;
     }
-
-    // regular getters and setters follow
 
     public int getId() {
         return id;

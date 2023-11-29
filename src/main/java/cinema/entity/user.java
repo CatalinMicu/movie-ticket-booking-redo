@@ -24,6 +24,7 @@ public class user {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private int id;
 
@@ -38,6 +39,10 @@ public class user {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<authorities> authorities;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ticket> tickets; // Should correspond with the field name in the Ticket class
+
 
     public int getId() {
         return id;

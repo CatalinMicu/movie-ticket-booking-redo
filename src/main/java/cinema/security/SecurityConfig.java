@@ -43,8 +43,6 @@ public class SecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-
-
     @Bean
     public UserDetailsManager userDetailsManager(DataSource dataSource) {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
@@ -55,10 +53,6 @@ public class SecurityConfig {
 
         return manager;
     }
-
-
-
-
 
 
     @Bean
@@ -76,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/movies").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/movies").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/movies/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/movies/buyTicket/**").permitAll()
 
         );
         //use http basic authentification
@@ -86,4 +81,6 @@ public class SecurityConfig {
     }
 
 
+
 }
+

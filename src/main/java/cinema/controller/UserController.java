@@ -44,12 +44,11 @@ public class UserController {
     @Transactional
     @PostMapping("/users")
     @ResponseBody
-    public user addUser(@RequestBody user theUser) {
-        theUser.setId(0);
-        theUser.setEnabled(true);
-        user dbUser = userService.save(theUser);
-        authoritiesService.saveAuthorityForUser(dbUser);
-        return dbUser;
+    public user addUser(@RequestBody user newUser) {
+        newUser.setEnabled(true); // Assuming default true is intended for all new users
+        user savedUser = userService.save(newUser); // Save the user
+        authoritiesService.saveAuthorityForUser(savedUser); // After saving, the ID should be generated
+        return savedUser;
     }
 
     @DeleteMapping("users/{user_id}")
