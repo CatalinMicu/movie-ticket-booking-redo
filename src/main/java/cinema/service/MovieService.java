@@ -10,6 +10,7 @@ public interface MovieService {
     movie findById(int movie_id);
 
     movie save(movie theMovie);
-
     void deleteById(int movie_id);
+
+    List<movie> findByName(String name);
 }

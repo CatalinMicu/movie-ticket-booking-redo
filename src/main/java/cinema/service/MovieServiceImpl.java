@@ -2,6 +2,7 @@ package cinema.service;
 
 import cinema.DAO.MovieRepository;
 import cinema.entity.movie;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,18 +38,22 @@ public class MovieServiceImpl implements MovieService {
         return TheMovie;
     }
 
+    @Transactional
     @Override
     public movie save(movie theMovie) {
         return movieRepository.save(theMovie);
     }
 
+    @Transactional
     @Override
     public void deleteById(int movie_id) {
         movieRepository.deleteById(movie_id);
     }
 
-    public movie findByName(String nume) {
-        return movieRepository.findByName(nume);
+    @Transactional
+    @Override
+    public List<movie> findByName(String name) {
+        return movieRepository.findByNameContainingIgnoreCase(name);
     }
 
 }

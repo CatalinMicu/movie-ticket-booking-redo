@@ -11,7 +11,9 @@ public interface TicketService {
     List<ticket> findAll();
     ticket createTicket(ticket Ticket);
 
-    Optional<ticket> getTicketById(int id);
+    ticket findById(int id);
+
+    void deleteById(int id);
 
     List<ticket> getAllTickets();
 

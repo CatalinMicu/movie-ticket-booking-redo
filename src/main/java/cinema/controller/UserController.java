@@ -5,6 +5,8 @@ import cinema.service.AuthoritiesService;
 import cinema.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +38,7 @@ public class UserController {
     public user getUser(@PathVariable int user_id) {
         user theUser = userService.findById(user_id);
         if (theUser == null) {
-            throw new RuntimeException("User id not found -" + user_id);
+            throw new UserNotFoundException("User id not found -" + user_id);
         }
         return theUser;
     }
@@ -60,6 +62,5 @@ public class UserController {
         userService.deleteById(user_id);
         return "Deleted user id - " + user_id;
     }
-
 
 }

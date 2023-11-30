@@ -6,15 +6,17 @@ import cinema.entity.user;
 import cinema.service.MovieService;
 import cinema.service.TicketService;
 import cinema.service.UserService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movies")
@@ -61,4 +63,32 @@ public class TicketController {
 
         return ResponseEntity.ok(newTicket);
     }
+
+    @GetMapping("/tickets")
+    public List<ticket> findAll() {
+        return ticketService.findAll();
+    }
+
+    @GetMapping("/tickets/{ticket_id}")
+    @ResponseBody
+    public ticket getTicket(@PathVariable int ticket_id) {
+        ticket theTicket = ticketService.findById(ticket_id);
+        if (theTicket == null) {
+            throw new TicketNotFoundException("User id not found -" + theTicket);
+        }
+        return theTicket;
+    }
+
+    @DeleteMapping("tickets/{ticket_id}")
+    public String deleteTicket(@PathVariable int ticket_id) {
+        ticket tempTicket = ticketService.findById(ticket_id);
+
+        if (tempTicket == null) {
+            throw new RuntimeException("Ticket id not found - " + tempTicket);
+        }
+        ticketService.deleteById(ticket_id);
+        return "Deleted ticket id - " + ticket_id;
+    }
+
+
 }

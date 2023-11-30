@@ -66,15 +66,21 @@ public class SecurityConfig {
                 configurer
                         .requestMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority("USER")
                         .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/users").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/users").anonymous()
                         .requestMatchers(HttpMethod.PUT, "/api/users").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/movies").hasAnyAuthority("USER")
                         .requestMatchers(HttpMethod.GET, "/api/movies/**").hasAnyAuthority("USER")
                         .requestMatchers(HttpMethod.POST, "/api/movies").hasAnyAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/movies").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/movies/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/movies/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/movies/tickets").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/movies/tickets/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/movies/buyTicket/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/movies/tickets/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/movies/buyTicket/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/movies/name/**").hasAnyAuthority("USER")
+
 
         );
         http.httpBasic();

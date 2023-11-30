@@ -32,14 +32,28 @@ public class TicketServiceImpl implements TicketService{
         return Ticket;
     }
 
-    @Override
-    public Optional<ticket> getTicketById(int id) {
-        return ticketRepository.findById(id);
+    public ticket findById(int theId) {
+        Optional<ticket> rezultat = ticketRepository.findById(theId);
+        ticket theTicket = null;
+
+        if (rezultat.isPresent()) {
+            theTicket = rezultat.get();
+        } else {
+            throw new RuntimeException("Nu a fost gasit ticket-ul cu id - " + theId);
+        }
+
+        return theTicket;
     }
 
     @Override
     public List<ticket> getAllTickets() {
         return null;
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(int theId) {
+        ticketRepository.deleteById(theId);
     }
 
     public List<ticket> findTicketsByMovie(movie Movie) {
