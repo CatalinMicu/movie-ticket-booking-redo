@@ -45,9 +45,9 @@ public class UserController {
     @PostMapping("/users")
     @ResponseBody
     public user addUser(@RequestBody user newUser) {
-        newUser.setEnabled(true); // Assuming default true is intended for all new users
-        user savedUser = userService.save(newUser); // Save the user
-        authoritiesService.saveAuthorityForUser(savedUser); // After saving, the ID should be generated
+        newUser.setEnabled(true);
+        user savedUser = userService.save(newUser);
+        authoritiesService.saveAuthorityForUser(savedUser);
         return savedUser;
     }
 

@@ -21,6 +21,7 @@ public class ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ticket_id")
     private int id;
 
     @ManyToOne

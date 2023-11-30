@@ -6,6 +6,7 @@ import cinema.entity.user;
 import cinema.service.MovieService;
 import cinema.service.TicketService;
 import cinema.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -47,6 +48,11 @@ public class TicketController {
         Integer seatNumber = payload.get("seatNumber");
         if (seatNumber == null) {
             return ResponseEntity.badRequest().body("Seat number is required.");
+        }
+
+        boolean seatAvailable = ticketService.isSeatAvailable(movieId, seatNumber);
+        if (!seatAvailable) {
+            return ResponseEntity.badRequest().body("Seat number " + seatNumber + " is already taken.");
         }
 
         ticket newTicket = new ticket(loggedInUser, selectedMovie, new Date(), seatNumber);

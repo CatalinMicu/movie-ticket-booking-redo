@@ -3,6 +3,7 @@ package cinema.service;
 import cinema.DAO.TicketRepository;
 import cinema.entity.movie;
 import cinema.entity.ticket;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,18 +48,7 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public boolean isSeatAvailable(int movieId, int seatNumber) {
-        // Fetch all tickets for the given movie
-        List<ticket> ticketsForMovie = ticketRepository.findAll().stream()
-                .filter(t -> t.getMovie().getId() == movieId)
-                .collect(Collectors.toList());
-
-        for (ticket t : ticketsForMovie) {
-            if (t.getSeatNumber() == seatNumber) {
-                return false;
-            }
-        }
-
-        return true;
+        return !ticketRepository.isSeatTaken(movieId, seatNumber);
     }
 
 }
